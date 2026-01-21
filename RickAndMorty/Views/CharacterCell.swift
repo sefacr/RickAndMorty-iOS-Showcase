@@ -93,14 +93,7 @@ final class CharacterCell: UICollectionViewCell {
         statusLabel.text = character.status
         speciesLabel.text = character.species
         
-        if let url = URL(string: character.image) {
-            URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
-                guard let data = data, let image = UIImage(data: data) else { return }
-                DispatchQueue.main.async {
-                    self?.characterImageView.image = image
-                }
-            }.resume()
-        }
+        characterImageView.setRMImage(urlString: character.image)
     }
     
     override func prepareForReuse() {

@@ -182,13 +182,6 @@ final class CharacterDetailViewController: UIViewController {
         originLabel.text = "Origin: \(character.origin.name)"
         locationLabel.text = "Location: \(character.location.name)"
         
-        if let url = URL(string: character.image) {
-            URLSession.shared.dataTask(with: url) { [weak self] data, _, _ in
-                guard let data = data, let image = UIImage(data: data) else { return }
-                DispatchQueue.main.async {
-                    self?.characterImageView.image = image
-                }
-            }.resume()
-        }
+        characterImageView.setRMImage(urlString: character.image)
     }
 }
