@@ -10,6 +10,7 @@ import Foundation
 enum RMEndpoint: Endpoint {
     
     case characters(page: Int)
+    case characterDetail(id: Int)
     case locations
     case episodes
     
@@ -20,6 +21,7 @@ enum RMEndpoint: Endpoint {
     var path: String {
         switch self {
         case .characters: return "/character"
+        case .characterDetail(let id): return "/character/\(id)"
         case .locations: return "/location"
         case .episodes: return "/episode"
         }
@@ -34,6 +36,8 @@ enum RMEndpoint: Endpoint {
         switch self {
         case .characters(let page):
             return ["page": String(page)]
+        case .characterDetail:
+            return nil
         default:
             return nil
         }
@@ -44,3 +48,7 @@ enum RMEndpoint: Endpoint {
         return ["Content-Type": "application/json"]
     }
 }
+
+
+
+
