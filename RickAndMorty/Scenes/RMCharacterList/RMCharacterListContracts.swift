@@ -9,6 +9,13 @@ import Foundation
 
 // MARK: - Router
 
+enum RMCharacterListRoute {
+    case showCharacterDetails(Character)
+}
+
+protocol RMCharacterListRouterProtocol: AnyObject {
+    func navigate(to route: RMCharacterListRoute)
+}
 
 // MARK: - Presenter
 
@@ -16,6 +23,7 @@ protocol RMCharacterListPresenterProtocol: AnyObject {
     var itemCount: Int { get }
     func getPresentation(at index: Int) -> RMCharacterListPresentation
     func loadData()
+    func selectCharacter(_ index: Int)
 }
 
 enum RMCharacterListPresenterOutput {
@@ -34,11 +42,13 @@ protocol RMCharacterListViewProtocol: AnyObject {
 protocol RMCharacterListInteractorProtocol: AnyObject {
     var delegate: RMCharacterListInteractorDelegate? { get set } 
     func fetchData()
+    func selectCharacter(_ index: Int)
 }
 
 enum RMCharacterListInteractorOutput {
     case showLoadingIndicator(Bool)
     case setCharacters([Character])
+    case selectCharacter(Character)
 }
 
 protocol RMCharacterListInteractorDelegate: AnyObject {

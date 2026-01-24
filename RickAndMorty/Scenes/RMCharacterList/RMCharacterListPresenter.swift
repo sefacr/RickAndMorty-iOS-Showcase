@@ -10,16 +10,19 @@ import Foundation
 final class RMCharacterListPresenter {
     
     private let interactor: RMCharacterListInteractorProtocol!
+    private let router: RMCharacterListRouterProtocol!
     private unowned let view: RMCharacterListViewProtocol!
     
     private var characters: [RMCharacterListPresentation] = []
     
     init(
         interactor: RMCharacterListInteractorProtocol!,
-        view: RMCharacterListViewProtocol!
+        view: RMCharacterListViewProtocol!,
+        router: RMCharacterListRouterProtocol!
     ) {
         self.interactor = interactor
         self.view = view
+        self.router = router
         self.interactor.delegate = self
     }
 }
@@ -37,6 +40,10 @@ extension RMCharacterListPresenter: RMCharacterListPresenterProtocol {
     func loadData() {
         interactor.fetchData()
     }
+    
+    func selectCharacter(_ index: Int) {
+        interactor.selectCharacter(index)
+    }
 }
 
 extension RMCharacterListPresenter: RMCharacterListInteractorDelegate {
@@ -49,6 +56,8 @@ extension RMCharacterListPresenter: RMCharacterListInteractorDelegate {
             view.handleOutput(.setCharacters(cellPresentation))
         case .showLoadingIndicator(let isLoading):
             view.handleOutput(.showLoadingIndicator(isLoading))
+        case .selectCharacter(let character):
+            router.navigate(to: .showCharacterDetails(character))
         }
     }
 }

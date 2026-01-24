@@ -102,7 +102,7 @@ extension RMCharacterListViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
+        presenter.selectCharacter(indexPath.item)
     }
 }
 

@@ -14,7 +14,8 @@ final class RMCharacterListBuilder {
         let viewController = RMCharacterListViewController()
         let service = RMCharacterListService()
         let interactor = RMCharacterListInteractor(service: service)
-        let presenter = RMCharacterListPresenter(interactor: interactor, view: viewController)
+        let router = RMCharacterListRouter(view: viewController)
+        let presenter = RMCharacterListPresenter(interactor: interactor, view: viewController, router: router)
         viewController.presenter = presenter
         
         return viewController

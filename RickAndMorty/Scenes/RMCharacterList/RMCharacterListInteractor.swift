@@ -12,6 +12,8 @@ final class RMCharacterListInteractor {
     weak var delegate: RMCharacterListInteractorDelegate?
     var service: RMCharacterListServiceProtocol!
     
+    var characters: [Character] = []
+    
     init(service: RMCharacterListServiceProtocol!) {
         self.service = service
     }
@@ -26,10 +28,16 @@ extension RMCharacterListInteractor: RMCharacterListInteractorProtocol {
             delegate?.didReceiveOutput(.showLoadingIndicator(false))
             switch result {
             case .success(let characters):
+                self.characters.append(contentsOf: characters)
                 self.delegate?.didReceiveOutput(.setCharacters(characters))
             case .failure(let error):
                 print(error)
             }
         }
+    }
+    
+    func selectCharacter(_ index: Int) {
+        let character = characters[index]
+        self.delegate?.didReceiveOutput(.selectCharacter(character))
     }
 }
