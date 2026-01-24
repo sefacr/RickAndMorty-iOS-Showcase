@@ -18,6 +18,7 @@ protocol RMCharacterListPresenterProtocol: AnyObject {
 
 enum RMCharacterListPresenterOutput {
     case setCharacters([Character])
+    case showLoadingIndicator(Bool)
 }
 
 // MARK: - View
@@ -34,6 +35,7 @@ protocol RMCharacterListInteractorProtocol: AnyObject {
 }
 
 enum RMCharacterListInteractorOutput {
+    case showLoadingIndicator(Bool)
     case setCharacters([Character])
 }
 
