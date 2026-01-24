@@ -19,7 +19,7 @@ final class RMCharacterListRouter: RMCharacterListRouterProtocol {
         switch route {
         case .showCharacterDetails(let character):
             let vc = UIViewController()
-            self.view.show(vc, sender: nil)
+            self.view.show(RMCharacterDetailBuilder.make(character: character), sender: nil)
         }
     }
 }

@@ -1,17 +1,15 @@
 //
-//  CharacterDetailViewController.swift
+//  RMCharacterDetailViewController.swift
 //  RickAndMorty
 //
-//  Created by Sefa Acar on 21.01.2026.
+//  Created by Sefa Acar on 25.01.2026.
 //
 
 import UIKit
 
-final class CharacterDetailViewController: UIViewController {
+final class RMCharacterDetailViewController: UIViewController {
     
-    private let characterId: Int
-    private let service: CharacterDetailServiceProtocol = CharacterDetailService()
-    private var character: Character?
+    var presenter: RMCharacterDetailPresenterProtocol!
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -84,19 +82,11 @@ final class CharacterDetailViewController: UIViewController {
         return indicator
     }()
     
-    init(characterId: Int) {
-        self.characterId = characterId
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        presenter.loadData()
         setupUI()
-        fetchCharacterDetail()
     }
     
     private func setupUI() {
@@ -155,26 +145,7 @@ final class CharacterDetailViewController: UIViewController {
         ])
     }
     
-    private func fetchCharacterDetail() {
-        loadingIndicator.startAnimating()
-        
-        service.fetchCharacterDetail(id: characterId) { [weak self] result in
-            guard let self = self else { return }
-            self.loadingIndicator.stopAnimating()
-            
-            switch result {
-            case .success(let character):
-                self.character = character
-                DispatchQueue.main.async {
-                    self.updateUI(with: character)
-                }
-            case .failure(let error):
-                print("Error fetching character detail: \(error)")
-            }
-        }
-    }
-    
-    private func updateUI(with character: Character) {
+    private func configure(with character: Character) {
         title = character.name
         nameLabel.text = character.name
         statusLabel.text = "Status: \(character.status)"
@@ -183,5 +154,21 @@ final class CharacterDetailViewController: UIViewController {
         locationLabel.text = "Location: \(character.location.name)"
         
         characterImageView.setRMImage(urlString: character.image)
+    }
+}
+
+extension RMCharacterDetailViewController: RMCharacterDetailViewProtocol {
+    
+    func handleOutput(_ output: RMCharacterDetailPresenterOutput) {
+        switch output {
+        case .showCharacter(let character):
+            configure(with: character)
+        case .showLoading(let isLoading):
+            if isLoading {
+                loadingIndicator.startAnimating()
+            } else {
+                loadingIndicator.stopAnimating()
+            }
+        }
     }
 }

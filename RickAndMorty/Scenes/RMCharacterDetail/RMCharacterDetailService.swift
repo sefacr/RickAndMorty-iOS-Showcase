@@ -1,17 +1,17 @@
 //
-//  CharacterDetailService.swift
+//  RMCharacterDetailService.swift
 //  RickAndMorty
 //
-//  Created by Sefa Acar on 21.01.2026.
+//  Created by Sefa Acar on 25.01.2026.
 //
 
 import Foundation
 
-protocol CharacterDetailServiceProtocol: AnyObject {
+protocol RMCharacterDetailServiceProtocol: AnyObject {
     func fetchCharacterDetail(id: Int, completion: @escaping (Result<Character, Error>) -> Void)
 }
 
-final class CharacterDetailService: CharacterDetailServiceProtocol {
+final class RMCharacterDetailService: RMCharacterDetailServiceProtocol {
     
     func fetchCharacterDetail(id: Int, completion: @escaping (Result<Character, Error>) -> Void) {
         Task {
