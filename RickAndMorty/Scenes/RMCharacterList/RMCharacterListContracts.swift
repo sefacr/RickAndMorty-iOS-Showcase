@@ -13,11 +13,13 @@ import Foundation
 // MARK: - Presenter
 
 protocol RMCharacterListPresenterProtocol: AnyObject {
+    var itemCount: Int { get }
+    func getPresentation(at index: Int) -> RMCharacterListPresentation
     func loadData()
 }
 
 enum RMCharacterListPresenterOutput {
-    case setCharacters([Character])
+    case setCharacters([RMCharacterListPresentation])
     case showLoadingIndicator(Bool)
 }
 

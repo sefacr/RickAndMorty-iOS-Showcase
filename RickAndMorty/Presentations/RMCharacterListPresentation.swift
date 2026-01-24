@@ -8,11 +8,11 @@
 import Foundation
 
 struct RMCharacterListPresentation {
-    let results: [Character]
+    let character: Character
     
     init(
-        results: [Character]
+        character: Character
     ) {
-        self.results = results
+        self.character = character
     }
 }

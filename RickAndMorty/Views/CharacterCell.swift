@@ -88,12 +88,12 @@ final class CharacterCell: UICollectionViewCell {
         ])
     }
     
-    func configure(with character: Character) {
-        nameLabel.text = character.name
-        statusLabel.text = character.status
-        speciesLabel.text = character.species
+    func configure(presentation: RMCharacterListPresentation) {
+        nameLabel.text = presentation.character.name
+        statusLabel.text = presentation.character.status
+        speciesLabel.text = presentation.character.species
         
-        characterImageView.setRMImage(urlString: character.image)
+        characterImageView.setRMImage(urlString: presentation.character.image)
     }
     
     override func prepareForReuse() {

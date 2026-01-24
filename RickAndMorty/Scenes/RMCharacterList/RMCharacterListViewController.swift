@@ -11,8 +11,6 @@ final class RMCharacterListViewController: UIViewController {
     
     var presenter: RMCharacterListPresenterProtocol!
     
-    var characters: [Character] = []
-    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -66,8 +64,7 @@ extension RMCharacterListViewController: RMCharacterListViewProtocol {
     
     func handleOutput(_ output: RMCharacterListPresenterOutput) {
         switch output {
-        case .setCharacters(let characters):
-            self.characters.append(contentsOf: characters)
+        case .setCharacters(_):
             collectionView.reloadData()
         case .showLoadingIndicator(let isLoading):
             if isLoading {
@@ -82,15 +79,15 @@ extension RMCharacterListViewController: RMCharacterListViewProtocol {
 extension RMCharacterListViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return characters.count
+        return presenter.itemCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCell.identifier, for: indexPath) as? CharacterCell else {
             return UICollectionViewCell()
         }
-        let character = characters[indexPath.item]
-        cell.configure(with: character)
+        
+        cell.configure(presentation: presenter.getPresentation(at: indexPath.item))
         return cell
     }
 }
