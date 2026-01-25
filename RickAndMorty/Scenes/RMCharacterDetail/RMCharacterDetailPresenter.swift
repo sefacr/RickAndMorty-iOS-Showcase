@@ -24,7 +24,8 @@ final class RMCharacterDetailPresenter: RMCharacterDetailInteractorDelegate {
     func handleOutput(_ output: RMCharacterDetailInteractorOutput) {
         switch output {
         case .showCharacter(let character):
-            view.handleOutput(.showCharacter(character))
+            let presentation = RMCharacterDetailPresentation(character: character)
+            view.handleOutput(.showCharacter(presentation))
         case .showLoading(let isLoading):
             view.handleOutput(.showLoading(isLoading))
         }

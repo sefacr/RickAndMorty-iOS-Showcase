@@ -15,7 +15,7 @@ protocol RMCharacterDetailPresenterProtocol: AnyObject {
 }
 
 enum RMCharacterDetailPresenterOutput {
-    case showCharacter(Character)
+    case showCharacter(RMCharacterDetailPresentation)
     case showLoading(Bool)
 }
 

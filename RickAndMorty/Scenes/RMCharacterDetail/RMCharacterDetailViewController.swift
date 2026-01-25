@@ -154,14 +154,13 @@ final class RMCharacterDetailViewController: UIViewController {
         ])
     }
     
-    private func configure(with character: Character) {
-        nameLabel.text = character.name
-        statusLabel.text = "Status: \(character.status)"
-        speciesLabel.text = "Species: \(character.species)"
-        originLabel.text = "Origin: \(character.origin.name)"
-        locationLabel.text = "Location: \(character.location.name)"
-        
-        characterImageView.setRMImage(urlString: character.image)
+    private func configure(with presentation: RMCharacterDetailPresentation) {
+        nameLabel.text = presentation.name
+        statusLabel.text = presentation.statusText
+        speciesLabel.text = presentation.speciesText
+        originLabel.text = presentation.originText
+        locationLabel.text = presentation.locationText
+        characterImageView.setRMImage(urlString: presentation.imageURL)
     }
 }
 
