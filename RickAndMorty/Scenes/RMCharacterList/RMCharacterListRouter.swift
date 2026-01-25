@@ -18,7 +18,6 @@ final class RMCharacterListRouter: RMCharacterListRouterProtocol {
     func navigate(to route: RMCharacterListRoute) {
         switch route {
         case .showCharacterDetails(let character):
-            let vc = UIViewController()
             self.view.show(RMCharacterDetailBuilder.make(character: character), sender: nil)
         }
     }
