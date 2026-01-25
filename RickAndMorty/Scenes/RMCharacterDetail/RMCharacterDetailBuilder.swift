@@ -11,7 +11,7 @@ final class RMCharacterDetailBuilder {
     
     static func make(character: Character) -> RMCharacterDetailViewController {
         
-        let viewController = RMCharacterDetailViewController()
+        let viewController = RMCharacterDetailViewController(navigationTitle: character.name)
         let service = RMCharacterDetailService()
         let interactor = RMCharacterDetailInteractor(character: character, service: service)
         let presenter = RMCharacterDetailPresenter(interactor: interactor ,view: viewController)

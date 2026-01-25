@@ -82,6 +82,15 @@ final class RMCharacterDetailViewController: UIViewController {
         return indicator
     }()
     
+    init(navigationTitle: String) {
+        super.init(nibName: nil, bundle: nil)
+        title = navigationTitle
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -146,7 +155,6 @@ final class RMCharacterDetailViewController: UIViewController {
     }
     
     private func configure(with character: Character) {
-        title = character.name
         nameLabel.text = character.name
         statusLabel.text = "Status: \(character.status)"
         speciesLabel.text = "Species: \(character.species)"
