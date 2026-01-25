@@ -10,7 +10,7 @@ import Foundation
 final class RMCharacterDetailInteractor {
     
     var delegate: (any RMCharacterDetailInteractorDelegate)?
-    let service: RMCharacterDetailServiceProtocol!
+    let service: RMCharacterDetailServiceProtocol
     
     var character: Character!
     
@@ -26,16 +26,17 @@ final class RMCharacterDetailInteractor {
 extension RMCharacterDetailInteractor: RMCharacterDetailInteractorProtocol {
     
     func loadData() {
-        delegate?.handleOutput(.showLoading(true))
-        service.fetchCharacterDetail(id: character.id) { [weak self] result in
-            guard let self else { return }
-            delegate?.handleOutput(.showLoading(false))
-            switch result {
-            case .success(let character):
-                delegate?.handleOutput(.showCharacter(character))
-            case .failure(let error):
-                print(error)
-            }
-        }
+//        delegate?.handleOutput(.showLoading(true))
+//        service.fetchCharacterDetail(id: character.id) { [weak self] result in
+//            guard let self else { return }
+//            delegate?.handleOutput(.showLoading(false))
+//            switch result {
+//            case .success(let character):
+//                delegate?.handleOutput(.showCharacter(character))
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
+        delegate?.handleOutput(.showCharacter(self.character))
     }
 }

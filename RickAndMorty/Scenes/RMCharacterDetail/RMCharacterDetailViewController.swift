@@ -94,8 +94,8 @@ final class RMCharacterDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        presenter.loadData()
         setupUI()
+        presenter.loadData()
     }
     
     private func setupUI() {
