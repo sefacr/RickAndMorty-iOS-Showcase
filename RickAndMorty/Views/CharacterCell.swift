@@ -98,7 +98,7 @@ final class CharacterCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        characterImageView.image = nil
+        characterImageView.cancelImageLoad()
         nameLabel.text = nil
         statusLabel.text = nil
         speciesLabel.text = nil

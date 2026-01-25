@@ -63,12 +63,37 @@ class ImageCacheManager {
     }
 }
 
+
+private var currentImageURLKey: UInt8 = 0
+
 extension UIImageView {
+    private var currentImageURL: String? {
+        get {
+            return objc_getAssociatedObject(self, &currentImageURLKey) as? String
+        }
+        set {
+            objc_setAssociatedObject(self, &currentImageURLKey, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+    
     func setRMImage(urlString: String) {
+        currentImageURL = nil
+        currentImageURL = urlString
+        
+        self.image = nil
+        
         RMImageManager.shared.loadImage(urlString: urlString) { [weak self] image in
             DispatchQueue.main.async {
-                self?.image = image
+                guard let self = self, self.currentImageURL == urlString else {
+                    return
+                }
+                self.image = image
             }
         }
+    }
+    
+    func cancelImageLoad() {
+        currentImageURL = nil
+        self.image = nil
     }
 }
