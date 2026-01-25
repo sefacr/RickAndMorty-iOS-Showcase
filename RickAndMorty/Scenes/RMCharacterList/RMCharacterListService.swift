@@ -15,9 +15,10 @@ final class RMCharacterListService: RMCharacterListServiceProtocol {
     
     var currentPage = 1
     var totalPages: Int? = nil
+    private var isLoading = false
     
     func fetchCharactersList(completion: @escaping (Result<[Character], Error>) -> Void) {
-        guard currentPage <= totalPages ?? 1 else { return }
+        guard !isLoading, currentPage <= totalPages ?? 1 else { return }
         
         Task {
             do {

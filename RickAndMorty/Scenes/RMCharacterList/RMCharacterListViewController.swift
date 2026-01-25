@@ -109,6 +109,7 @@ extension RMCharacterListViewController: UICollectionViewDelegateFlowLayout {
 extension RMCharacterListViewController: UIScrollViewDelegate {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard scrollView.contentSize.height > scrollView.frame.height else { return }
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         let height = scrollView.frame.size.height
