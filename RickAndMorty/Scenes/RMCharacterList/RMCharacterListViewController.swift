@@ -73,7 +73,7 @@ final class RMCharacterListViewController: UIViewController {
     private func setupView() {
         view.backgroundColor = .systemBackground
         
-        navigationItem.title = "Popular TV Shows"
+        navigationItem.title = "Characters"
         
         view.addSubview(collectionView)
         view.addSubview(loadingIndicator)
@@ -123,12 +123,13 @@ extension RMCharacterListViewController: RMCharacterListViewModelDelegate {
 extension RMCharacterListViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard scrollView.contentSize.height > scrollView.frame.height else { return }
         let offsetY = scrollView.contentOffset.y
         let contentHeight = scrollView.contentSize.height
         let height = scrollView.frame.size.height
         
         if offsetY > contentHeight - height * 2 {
-            self.viewModel.loadData()
+            viewModel.loadData()
         }
     }
     
@@ -137,7 +138,9 @@ extension RMCharacterListViewController: UICollectionViewDelegate, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCell.identifier, for: indexPath) as! CharacterCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterCell.identifier, for: indexPath) as? CharacterCell else {
+            return UICollectionViewCell()
+        }
         
         let cellPresentation = cellPresentation[indexPath.item]
         
@@ -146,15 +149,10 @@ extension RMCharacterListViewController: UICollectionViewDelegate, UICollectionV
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let itemsPerRow: CGFloat = 3
-        let spacing: CGFloat = 10
-        
-        let totalSpacing = (itemsPerRow - 1) * spacing
-        let availableWidth = collectionView.bounds.width - totalSpacing
-        let widthPerItem = floor(availableWidth / itemsPerRow)
-        let heightPerItem = widthPerItem * 1.5
-        
-        return CGSize(width: widthPerItem, height: heightPerItem)
+        let padding: CGFloat = 16 * 3
+        let availableWidth = collectionView.frame.width - padding
+        let itemWidth = availableWidth / 2
+        return CGSize(width: itemWidth, height: itemWidth + 100)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
