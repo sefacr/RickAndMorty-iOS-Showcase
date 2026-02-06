@@ -1,17 +1,13 @@
 //
-//  CharacterDetailViewController.swift
+//  RMChatacterDetailViewController.swift
 //  RickAndMorty
 //
-//  Created by Sefa Acar on 21.01.2026.
+//  Created by Sefa Acar on 6.02.2026.
 //
 
 import UIKit
 
-final class CharacterDetailViewController: UIViewController {
-    
-    private let characterId: Int
-    private let service: CharacterDetailServiceProtocol = CharacterDetailService()
-    private var character: Character?
+final class RMCharacterDetailViewController: UIViewController {
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -84,9 +80,21 @@ final class CharacterDetailViewController: UIViewController {
         return indicator
     }()
     
-    init(characterId: Int) {
-        self.characterId = characterId
+    var viewModel: RMCharacterDetailViewModelProtocol! {
+        didSet {
+            viewModel.delegate = self
+        }
+    }
+    
+    var coordinator: RMCharacterDetailCoordinator?
+    
+    deinit {
+        coordinator?.didFinish()
+    }
+    
+    init() {
         super.init(nibName: nil, bundle: nil)
+
     }
     
     required init?(coder: NSCoder) {
@@ -95,8 +103,9 @@ final class CharacterDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupUI()
-        fetchCharacterDetail()
+        viewModel.loadData()
     }
     
     private func setupUI() {
@@ -155,33 +164,28 @@ final class CharacterDetailViewController: UIViewController {
         ])
     }
     
-    private func fetchCharacterDetail() {
-        loadingIndicator.startAnimating()
-        
-        service.fetchCharacterDetail(id: characterId) { [weak self] result in
-            guard let self = self else { return }
-            self.loadingIndicator.stopAnimating()
-            
-            switch result {
-            case .success(let character):
-                self.character = character
-                DispatchQueue.main.async {
-                    self.updateUI(with: character)
-                }
-            case .failure(let error):
-                print("Error fetching character detail: \(error)")
-            }
-        }
+    private func configure(with presentation: RMCharacterDetailPresentation) {
+        nameLabel.text = presentation.name
+        statusLabel.text = presentation.statusText
+        speciesLabel.text = presentation.speciesText
+        originLabel.text = presentation.originText
+        locationLabel.text = presentation.locationText
+        characterImageView.setRMImage(urlString: presentation.imageURL)
     }
+}
+
+extension RMCharacterDetailViewController: RMCharacterDetailViewModelDelegate {
     
-    private func updateUI(with character: Character) {
-        title = character.name
-        nameLabel.text = character.name
-        statusLabel.text = "Status: \(character.status)"
-        speciesLabel.text = "Species: \(character.species)"
-        originLabel.text = "Origin: \(character.origin.name)"
-        locationLabel.text = "Location: \(character.location.name)"
-        
-        characterImageView.setRMImage(urlString: character.image)
+    func handleOutput(_ output: RMCharacterDetailViewModelOutput) {
+        switch output {
+        case .showLoading(let isLoading):
+            if isLoading {
+                loadingIndicator.startAnimating()
+            }else {
+                loadingIndicator.stopAnimating()
+            }
+        case .displayCharacter(let character):
+            configure(with: character)
+        }
     }
 }

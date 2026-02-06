@@ -1,23 +1,25 @@
 //
-//  CharacterListService.swift
+//  RMCharacterListService.swift
 //  RickAndMorty
 //
-//  Created by Sefa Acar on 21.01.2026.
+//  Created by Sefa Acar on 6.02.2026.
 //
 
 import Foundation
 
-protocol CharacterListServiceProtocol: AnyObject {
+
+protocol RMCharacterListServiceProtocol: AnyObject {
     func fetchCharactersList(completion: @escaping (Result<[Character], Error>) -> Void)
 }
 
-final class CharacterListService: CharacterListServiceProtocol {
+final class RMCharacterListService: RMCharacterListServiceProtocol {
     
     var currentPage = 1
-    var totalPages = 1
+    var totalPages: Int? = nil
+    private var isLoading = false
     
     func fetchCharactersList(completion: @escaping (Result<[Character], Error>) -> Void) {
-        guard currentPage <= totalPages else { return }
+        guard !isLoading, currentPage <= totalPages ?? 1 else { return }
         
         Task {
             do {
